@@ -8,8 +8,8 @@ beepy-install:
 beepy-remove:
     @python -m pip uninstall beepy_web_radio
 
-run:
-    @poetry run beepy_web_radio
+run *args:
+    @poetry run beepy_web_radio {{args}}
 
 # Run the tests
 test:
