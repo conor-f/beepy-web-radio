@@ -1,6 +1,8 @@
 import argparse
+import subprocess
 import traceback
 from typing import Dict, List
+from urllib.parse import urlparse
 
 import requests
 
@@ -45,8 +47,25 @@ def search_stations(query: str):
 
 
 def play_station(station: str):
-    print(f"Playing station: {station}")
-    # Implement station playback logic here
+    print(f"Attempting to play: {station}")
+
+    # Simple URL validation
+    parsed_url = urlparse(station)
+    if parsed_url.scheme and parsed_url.netloc:
+        try:
+            # Run mpd command as a background process that continues after the
+            # script exits.
+            subprocess.Popen(
+                f"BEEPY_WEB_RADIO=1 mpv {station} &",
+                shell=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            print(f"Started playback of {station}")
+        except subprocess.SubprocessError as e:
+            print(f"Error starting playback: {e}")
+    else:
+        print("The provided station is not a valid URL.")
 
 
 def stop_playback():
@@ -67,7 +86,7 @@ def main():
     )
 
     play_parser = subparsers.add_parser("play", help="Play a station")
-    play_parser.add_argument("station", help="Station to play")
+    play_parser.add_argument("station", nargs="+", help="Station URL to play")
 
     subparsers.add_parser("stop", help="Stop playback")
 
@@ -78,7 +97,8 @@ def main():
             query = " ".join(args.query)
             search_stations(query)
         elif args.command == "play":
-            play_station(args.station)
+            station = " ".join(args.station)
+            play_station(station)
         elif args.command == "stop":
             stop_playback()
         else:
