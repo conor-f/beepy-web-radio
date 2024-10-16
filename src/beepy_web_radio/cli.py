@@ -25,6 +25,7 @@ def get_stations(query: str) -> List[Dict]:
             "title": station["_source"]["title"],
             "subtitle": station["_source"]["subtitle"],
             "stream": station["_source"]["stream"],
+            "score": station["_score"],
         }
         for station in filtered_stations
     ]
@@ -52,20 +53,42 @@ def play_station(station: str):
     # Simple URL validation
     parsed_url = urlparse(station)
     if parsed_url.scheme and parsed_url.netloc:
-        try:
-            # Run mpd command as a background process that continues after the
-            # script exits.
-            subprocess.Popen(
-                f"BEEPY_WEB_RADIO=1 mpv {station} &",
-                shell=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            print(f"Started playback of {station}")
-        except subprocess.SubprocessError as e:
-            print(f"Error starting playback: {e}")
+        url_to_play = station
     else:
-        print("The provided station is not a valid URL.")
+        # If not a URL, use it as a search query
+        try:
+            stations = get_stations(station)
+            if stations:
+                # Sort stations by score in descending order and get the
+                # highest scoring one
+                highest_scoring_station = max(
+                    stations,
+                    key=lambda x: x["score"],
+                )
+                url_to_play = highest_scoring_station["stream"]
+                print(
+                    f"Playing highest scoring station: "
+                    f"{highest_scoring_station['title']}"
+                )
+            else:
+                print("No stations found matching the query.")
+                return
+        except requests.RequestException as e:
+            print(f"Error searching for stations: {e}")
+            return
+
+    try:
+        # Run mpv command as a background process that continues after the
+        # script exits
+        subprocess.Popen(
+            f"nohup sh -c 'mpv {url_to_play}' > /dev/null 2>&1 &",
+            shell=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        print(f"Started playback of {url_to_play}")
+    except subprocess.SubprocessError as e:
+        print(f"Error starting playback: {e}")
 
 
 def stop_playback():
