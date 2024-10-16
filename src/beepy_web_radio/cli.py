@@ -4,6 +4,7 @@ import traceback
 from typing import Dict, List
 from urllib.parse import urlparse
 
+import psutil
 import requests
 
 
@@ -50,6 +51,9 @@ def search_stations(query: str):
 def play_station(station: str):
     print(f"Attempting to play: {station}")
 
+    # Stop any currently playing station
+    stop_playback()
+
     # Simple URL validation
     parsed_url = urlparse(station)
     if parsed_url.scheme and parsed_url.netloc:
@@ -93,7 +97,11 @@ def play_station(station: str):
 
 def stop_playback():
     print("Stopping playback")
-    # Implement stop playback logic here
+    for proc in psutil.process_iter(["name"]):
+        if proc.info["name"] == "mpv":
+            proc.terminate()
+            print("Stopped mpv process")
+    print("Playback stopped")
 
 
 def main():

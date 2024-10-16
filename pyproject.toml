@@ -15,6 +15,7 @@ homepage = "https://github.com/conor-f/beepy-web-radio"
 textual = "^0.82.0"
 python = "^3.9"
 requests = "^2.32.3"
+psutil = "^6.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.3.3"
