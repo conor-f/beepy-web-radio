@@ -1,43 +1,36 @@
 # Beepy Web Radio
 
-Beepy app to play web radio
+## Overview
+
+This is a Beepy app to play web radio, powered by [radio.garden](http://radio.garden). The application is written in Python, using [Textual](https://textual.textualize.io/) for the TUI. You should install this through the [bapp-store](https://github.com/conor-f/bapp-store), but if you want to run this on a non-Beepy device, the `justfile` gives a pretty clear indication of what to do (or look at the Developer Quickstart below). In addition to the TUI, you can use `beepy-web-radio` as a regular CLI.
 
 
-## Project Initialization/Quickstart
+![Demo GIF](https://private-user-images.githubusercontent.com/2671067/377930795-ec0ee36a-c2f8-41ce-ab58-c6c1ca76e409.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjkyNjY0OTUsIm5iZiI6MTcyOTI2NjE5NSwicGF0aCI6Ii8yNjcxMDY3LzM3NzkzMDc5NS1lYzBlZTM2YS1jMmY4LTQxY2UtYWI1OC1jNmMxY2E3NmU0MDkuZ2lmP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MTAxOCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDEwMThUMTU0MzE1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NDgzM2UxYmI4ZGEzYTdhNjkxYjljOTlhMDNkYWViMWQ5YjNjYWY1NThiYjZhN2ZlMWRlZTg5M2JkMjlhZmJhNyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.H17GFtEHNxbghkp6_o1R95H4cu-sXoJMDUaeatoFwiM)
 
-To init this project, after running the cookiecutter:
 
 ```
-$ git init
+$ beepy_web_radio --help
+usage: beepy_web_radio [-h] {search,play,stop} ...
+
+Beepy Web Radio CLI
+
+positional arguments:
+  {search,play,stop}  Available commands
+    search            Search for stations
+    play              Play a station
+    stop              Stop playback
+
+options:
+  -h, --help          show this help message and exit
+```
+
+## Developer Quickstart
+
+```
 $ just init
-$ just test
 $ just run
-$ git add * .*
-$ git commit -am "Initial commit."
-$ git branch -M main
-$ git remote add origin git@github.com:conor-f/Beepy Web Radio.git  # Note this may need to be modified based on your Github username/repo name.
-$ git push -u origin main
+$ just run
+$ just run --help
 ```
 
-Don't forget to add your PyPi secrets to your github repo under `PYPI_API_TOKEN`.
-
-
-When you're ready for this application to appear on the `bapp-store`, add the `beepy-app` as a topic/tag to your Github repo.
-
-## License
-
-This project is licensed under the GPLv3 license.
-
-
-## Pre-commit Hooks
-
-This template includes pre-commit hooks for linting, formatting, and type-checking.
-
-The hooks will run automatically on every commit, applying the specified checks and auto-formatting without asking for confirmation.
-
-The pre-commit configuration includes:
-- Black (code formatting)
-- isort (import sorting)
-- Flake8 (linting)
-- MyPy (type checking)
-- Various file checks (trailing whitespace, YAML validation, etc.)
+The `just init` rule will install a number of pre-commit hooks in addition to installing the actual project.
