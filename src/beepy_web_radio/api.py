@@ -9,6 +9,22 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+def get_current_station() -> Optional[str]:
+    for proc in psutil.process_iter(["name", "cmdline"]):
+        if proc.info["name"] == "mpv":
+            cmdline = proc.info["cmdline"]
+            for i, arg in enumerate(cmdline):
+                if arg.startswith("--title="):
+                    return str(
+                        arg[8:]
+                    )  # Return the title without the '--title=' prefix
+                elif arg == "--title" and i + 1 < len(cmdline):
+                    return str(
+                        cmdline[i + 1]
+                    )  # Return the next argument after '--title'
+    return None
+
+
 def get_stations(query: str) -> List[Dict]:
     url = "https://radio.garden/api/search"
     params = {"q": query}
@@ -84,8 +100,9 @@ def play_station(station: str, station_title: Optional[str] = None):
 
 def stop_playback():
     logger.info("Stopping playback")
+    current_station = get_current_station()
     for proc in psutil.process_iter(["name"]):
         if proc.info["name"] == "mpv":
             proc.terminate()
-            logger.info("Stopped mpv process")
+            logger.info(f"Stopped mpv process playing: {current_station}")
     logger.info("Playback stopped")
