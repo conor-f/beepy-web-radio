@@ -19,8 +19,8 @@ class BeepyWebRadioApp(App):
     BINDINGS = [
         Binding("q", "quit", "Quit", show=True),
         Binding("s", "stop", "Stop Playback", show=True),
-        Binding("j", "stop", "Down", show=True),
-        Binding("k", "stop", "Up", show=True),
+        Binding("j", "move_down", "Down", show=True),
+        Binding("k", "move_up", "Up", show=True),
     ]
 
     def __init__(self, *args, **kwargs):
@@ -64,7 +64,7 @@ class BeepyWebRadioApp(App):
 
     def play_station(self, station: str) -> None:
         self.logger.info(f"Playing station: {station}")
-        play_station(station)
+        play_station(station, station_title=station)
         self.query_one("#now_playing").update(f"Now playing: {station}")
 
     def action_stop(self) -> None:
@@ -75,3 +75,13 @@ class BeepyWebRadioApp(App):
     def action_quit(self) -> None:
         self.logger.info("Quitting application")
         self.exit()
+
+    def action_move_down(self) -> None:
+        list_view = self.query_one("#stations")
+        if list_view.index < len(list_view.children) - 1:
+            list_view.action_cursor_down()
+
+    def action_move_up(self) -> None:
+        list_view = self.query_one("#stations")
+        if list_view.index > 0:
+            list_view.action_cursor_up()
