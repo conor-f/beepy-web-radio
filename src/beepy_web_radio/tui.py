@@ -19,6 +19,8 @@ class BeepyWebRadioApp(App):
     BINDINGS = [
         Binding("q", "quit", "Quit", show=True),
         Binding("s", "stop", "Stop Playback", show=True),
+        Binding("j", "stop", "Down", show=True),
+        Binding("k", "stop", "Up", show=True),
     ]
 
     def __init__(self, *args, **kwargs):
