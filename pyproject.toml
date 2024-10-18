@@ -30,7 +30,7 @@ types-requests = "^2.32.0.20241016"
 beepy_web_radio = "src.beepy_web_radio.main:main"
 
 [tool.black]
-line-length = 88
+line-length = 80
 target-version = ['py39']
 include = '\.pyi?$'
 extend-exclude = '''

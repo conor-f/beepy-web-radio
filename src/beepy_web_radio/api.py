@@ -19,7 +19,7 @@ def get_stations(query: str) -> List[Dict]:
     filtered_stations = [
         station
         for station in data["hits"]["hits"]
-        if station["_source"]["type"] == "channel" and station["_score"] > 150
+        if station["_source"]["type"] == "channel" and station["_score"] > 50
     ]
 
     return [
