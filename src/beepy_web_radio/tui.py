@@ -95,12 +95,8 @@ class BeepyWebRadioApp(App):
 
     def action_move_down(self) -> None:
         list_view = self.query_one("#stations")
-        # list_view.index can be None!
-        if list_view.index and list_view.index < len(list_view.children) - 1:
-            list_view.action_cursor_down()
+        list_view.action_cursor_down()
 
     def action_move_up(self) -> None:
         list_view = self.query_one("#stations")
-        # list_view.index can be None!
-        if list_view.index and list_view.index > 0:
-            list_view.action_cursor_up()
+        list_view.action_cursor_up()
