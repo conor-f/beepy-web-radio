@@ -1,6 +1,6 @@
 import logging
 import subprocess
-from typing import Dict, List
+from typing import Dict, List, Optional
 from urllib.parse import urlparse
 
 import psutil
@@ -33,7 +33,7 @@ def get_stations(query: str) -> List[Dict]:
     ]
 
 
-def play_station(station: str):
+def play_station(station: str, station_title: Optional[str] = None):
     logger.info(f"Attempting to play: {station}")
 
     # Stop any currently playing station
@@ -55,6 +55,7 @@ def play_station(station: str):
                     key=lambda x: x["score"],
                 )
                 url_to_play = highest_scoring_station["stream"]
+                station_title = highest_scoring_station["title"]
                 logger.info(
                     f"Playing highest scoring station: "
                     f"{highest_scoring_station['title']}"
@@ -70,12 +71,13 @@ def play_station(station: str):
         # Run mpv command as a background process that continues after the
         # script exits
         subprocess.Popen(
-            f"nohup sh -c 'mpv {url_to_play}' > /dev/null 2>&1 &",
+            f"nohup sh -c 'mpv --no-video {url_to_play} "
+            f'--title="{station_title}"\' > /dev/null 2>&1 &',
             shell=True,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        logger.info(f"Started playback of {url_to_play}")
+        logger.info(f"Started playback of {station_title} ({url_to_play})")
     except subprocess.SubprocessError as e:
         logger.error(f"Error starting playback: {e}")
 
