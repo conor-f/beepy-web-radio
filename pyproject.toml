@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "beepy_web_radio"
-version = "2.1.1"
+version = "3.0.0"
 description = "Beepy app to play web radio"
 authors = ["conor-f <beepy@randombits.host>"]
 license = "GPLv3"
@@ -27,7 +27,7 @@ mypy = "^1.9.0"
 types-requests = "^2.32.0.20241016"
 
 [tool.poetry.scripts]
-beepy_web_radio = "src.beepy_web_radio.main:main"
+beepy_web_radio = "beepy_web_radio.main:main"
 
 [tool.black]
 line-length = 80
