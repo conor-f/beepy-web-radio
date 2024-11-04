@@ -4,7 +4,7 @@ list:
 # TODO: Make these both work without relying on pip!
 beepy-install:
     @sudo apt install python3-venv
-    @python3 -m pip install pipx
+    @python3 -m pip install pipx --force  # For upgrades
     @pipx install beepy_web_radio
 
 beepy-remove:

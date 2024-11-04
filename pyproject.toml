@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "beepy_web_radio"
-version = "3.0.0"
+version = "3.0.1"
 description = "Beepy app to play web radio"
 authors = ["conor-f <beepy@randombits.host>"]
 license = "GPLv3"
